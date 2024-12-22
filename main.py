@@ -22,7 +22,7 @@ eventos = {}
 #Adiciona um aniversariante no banco de dados
 async def adicionar_aniversariante(nome: str, data: str):
   session = Sessao_base()
-  aniversariante_existente = (session.query(Aniversariantes).filter(Aniversariantes.nome == nome, Aniversariantes.data == data).first())
+  aniversariante_existente = (session.query(Aniversariantes).filter(Aniversariantes.nome == nome).first())
 
   if aniversariante_existente:
     session.close()
@@ -42,6 +42,8 @@ async def set_date(interact:discord.Interaction, data:str):
     aniversariante_adicionado = await adicionar_aniversariante(user,data) 
     if aniversariante_adicionado:
       await interact.response.send_message("Aniversariante adicionado!", ephemeral=True)
+    else:
+      await interact.response.send_message(f"O aniversariante {user} já foi adicionado! Use o comando /edit pra mudar a data!", ephemeral=True)
   except ValueError:
     await interact.response.send_message("Formato de data inválido! Use o formato Dia/Mês. Exemplo: 30/06", ephemeral=True)
 
@@ -115,7 +117,7 @@ async def verificar_data():
   if horario_atual == "00:00":
     aniversariantes = await buscar_aniversariantes_por_data(data_hoje)
     if aniversariantes:
-      canal = bot.get_channel(1320497553124491266)
+      canal = bot.get_channel(1320505883041730650)
       if canal:
         nomes = ", ".join(aniv.nome for aniv in aniversariantes)
         embed,imagem = custom_message(nomes)
