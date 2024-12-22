@@ -106,7 +106,7 @@ async def edit(interact: discord.Interaction, nova_data: str):
       await interact.response.send_message("Formato de data inválido! Use o formato Dia/Mês. Exemplo: 30/06", ephemeral=True)
 
 #Verifica se tem algum aniversariante no dia atual
-@tasks.loop(seconds=60)
+@tasks.loop(seconds=20)
 async def verificar_data():
   agora = datetime.now()
   data_hoje = agora.strftime("%d/%m")
